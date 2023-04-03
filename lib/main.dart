@@ -16,26 +16,67 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home:  MyHomePage(title: 'Expense Tracker'),
+      home:  const MyHomePage(title: 'Expense Tracker'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
 
-  MyHomePage({super.key, required this.title});
+  const MyHomePage({super.key, required this.title});
   final String title;
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> transaction =[
     Transaction(id: 't1',title: 'new Phone',amount: 500,dateTime: DateTime.now()),
     Transaction(id: 't2',title: 'Rice and stew',amount: 500,dateTime: DateTime.now()),
     Transaction(id: 't3',title: 'Yam and stew',amount: 500,dateTime: DateTime.now()),
     Transaction(id: 't4',title: 'Car Painting',amount: 500,dateTime: DateTime.now()),
   ];
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
 
-class _MyHomePageState extends State<MyHomePage> {
+  Widget addItem(String title, double amount,DateTime dateTime){
+    return Card(
+      elevation: 10.0,
+      color: Colors.white60,
+      margin: const EdgeInsets.all(10.0),
+      shadowColor: Colors.green,
+      child: Row(
+        children:  [
+         Container(
+           padding: const EdgeInsets.all(10.0),
+           margin: const EdgeInsets.all(10.0),
+           child:  Text(
+              '₦$amount',
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+              ),
+            ),
+         ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(title, style: const TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.normal,
+                color: Colors.black,
+              ),),
+              Text(dateTime.toString(),style: const TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.normal,
+                color: Colors.black,
+              ),),
+            ],
+          )
+        ],
+      ),
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,23 +88,28 @@ class _MyHomePageState extends State<MyHomePage> {
         children:  <Widget>[
           Container(
             width: double.infinity,
+            height: 80,
             child: const Card(
-              elevation: 5,
-              color: Colors.yellow,
-                child: Text(
-                  'Chart',
-                  textAlign: TextAlign.center,
+              elevation: 10.0,
+              color: Colors.white,
+              margin: EdgeInsets.only(left: 10.0,top: 20.0,right: 10.0),
+              shadowColor: Colors.green,
+                child: Center(
+                  child: Text(
+                    'Expenses',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: Colors.lightBlue),
+                  ),
                 ),
               ),
           ),
           Container(
             width: double.infinity,
-            child: const Card(
-              elevation: 5,
-              child: Text(
-                  'list of transaction',
-                textAlign: TextAlign.end,
-              ),
+            child: Column(
+              // mapping the list to a widget
+             children: transaction.map((tx){
+               return addItem(tx.title, tx.amount, DateTime.now());
+             }).toList()
             ),
           )
 
