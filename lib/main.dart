@@ -44,8 +44,8 @@ class _MyHomePageState extends State<MyHomePage> {
     Transaction(id: 't8',title: 'Car Painting',amount: 500,dateTime: DateTime.now()),
   ];
 
-   late String titleInput;
-   late double amountInput;
+final titleController = TextEditingController();
+final amountController = TextEditingController();
 
 
 
@@ -118,9 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     children:  [
                        TextField(
                           keyboardType: TextInputType.text,
-                          onChanged: (v){
-                            titleInput = v;
-                          },
+                          controller: titleController,
                           decoration: const InputDecoration(
                             label: Text('Title'),
                           )
@@ -128,7 +126,7 @@ class _MyHomePageState extends State<MyHomePage> {
                        TextField(
                           keyboardType:  const TextInputType.numberWithOptions(),
                           decoration:  const InputDecoration(label: Text('Amount')),
-                           onChanged: (val) => amountInput = double.parse(val),
+                          controller: amountController,
 
                       ),
 
@@ -139,8 +137,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             onPressed: ()  =>{
                               setState(() {
                                 final id = transaction.length + 1;
-                                addTransaction(id, titleInput, amountInput);
-
+                                addTransaction(id, titleController.text, double.parse(amountController.text));
                             })
 
                             },
